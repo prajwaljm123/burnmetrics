@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import InputForm from './components/InputForm';
+import Result from './components/Result';
+import { calculateCalories } from './utils/api';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    const [calories, setCalories] = useState(null);
+    const [externalInfo, setExternalInfo] = useState('');
+
+    const handleCalculate = async (inputData) => {
+        const data = await calculateCalories(inputData); // Await the API call
+        setCalories(data.calories);
+        setExternalInfo(data.externalInfo);
+    };
+
+    return (
+        <div className="App">
+            <h1>Calorie Burn Predictor</h1>
+            <InputForm onCalculate={handleCalculate} />
+            {calories !== null && <Result calories={calories} externalInfo={externalInfo} />}
+        </div>
+    );
+};
 
 export default App;
