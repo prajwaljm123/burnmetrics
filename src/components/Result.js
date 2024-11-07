@@ -1,15 +1,15 @@
 import React from 'react';
 
-const Result = ({ calories, externalInfo }) => {
+const Result = ({ result }) => {
+    if (!result) return null;
+
+    const { calories, externalInfo, message } = result;
+
     return (
         <div>
-            <h3>Calories Burned: {calories}</h3>
-            {externalInfo && (
-                <div>
-                    <h4>Additional Information:</h4>
-                    <pre>{JSON.stringify(externalInfo, null, 2)}</pre>
-                </div>
-            )}
+            <h3>Calories Burned: {calories || 'Error calculating'}</h3>
+            {message && <p>{message}</p>}
+            {externalInfo && <p>External Info: {externalInfo.error || JSON.stringify(externalInfo)}</p>}
         </div>
     );
 };
